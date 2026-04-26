@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>จัดการข้อมูลเรซูเม่ — ระบบแก้ไขอัจฉริยะ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+    }
+    body {
+      font-family: 'Inter', 'Sarabun', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .editor-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+    .editor-card:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+    input, textarea {
+      transition: all 0.2s ease;
+      border: 1px solid #cbd5e1;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    .section-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--primary);
+      padding-left: 12px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .btn-add {
+      background: #f1f5f9;
+      color: #475569;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: 1px dashed #cbd5e1;
+      width: 100%;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-add:hover {
+      background: #e2e8f0;
+      border-color: #94a3b8;
+    }
+    .btn-remove {
+      color: #ef4444;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .btn-remove:hover {
+      background: #fee2e2;
+    }
+    .sticky-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="glass-nav sticky top-0 z-50 py-4 mb-8">
+    <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-none">แก้ไขเรซูเม่</h1>
+          <p class="text-xs text-slate-500 mt-1">อัปเดตข้อมูลของคุณเพื่อสร้างโอกาสใหม่</p>
+        </div>
+      </div>
+      <div class="flex gap-4 items-center">
+        <button id="download-pdf" class="flex items-center gap-2 text-slate-600 text-sm font-semibold hover:text-indigo-600 transition-colors cursor-pointer bg-none border-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          ดาวน์โหลดเป็น PDF
+        </button>
+        <a href="index.html" class="flex items-center gap-2 text-slate-600 text-sm font-semibold hover:text-slate-900 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          กลับ
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pb-20">
+    <div class="flex flex-col lg:flex-row gap-8">
+      
+      <!-- Left Sidebar (Quick Links) -->
+      <aside class="lg:w-1/4 hidden lg:block">
+        <div class="sticky-sidebar">
+          <div class="bg-white border border-slate-200 rounded-2xl p-4">
+            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-2">สารบัญข้อมูล</h2>
+            <nav class="space-y-1">
+              <a href="#basic-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> ข้อมูลพื้นฐาน
+              </a>
+              <a href="#contact-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> การติดต่อ
+              </a>
+              <a href="#summary-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> คำนิยามตัวเอง
+              </a>
+              <a href="#education-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> การศึกษา
+              </a>
+              <a href="#skills-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> ทักษะความสามารถ
+              </a>
+              <a href="#experience-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> ประสบการณ์ทำงาน
+              </a>
+              <a href="#tools-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> เครื่องมือ
+              </a>
+              <a href="#soft-skills-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> Soft Skills
+              </a>
+              <a href="#projects-info" class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> โปรเจกต์
+              </a>
+            </nav>
+            <div class="mt-8 pt-6 border-t border-slate-100">
+              <button id="reset-btn" class="w-full text-left px-3 py-2 text-red-500 text-sm hover:bg-red-50 rounded-lg transition-colors cursor-pointer bg-none border-none">
+                คืนค่าเริ่มต้นทั้งหมด
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Form Section -->
+      <div class="lg:w-3/4">
+        <form id="edit-form">
+          
+          <!-- Basic Info -->
+          <section id="basic-info" class="editor-card">
+            <h2 class="section-title">ข้อมูลพื้นฐาน</h2>
+            <div class="flex flex-col md:flex-row gap-6 items-start">
+              <div class="relative group">
+                <div id="avatar-preview" class="w-24 h-24 rounded-2xl bg-indigo-50 border-2 border-dashed border-indigo-200 flex items-center justify-center text-indigo-400 text-2xl font-bold overflow-hidden">
+                  YS
+                </div>
+                <input type="file" id="avatar-file" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                <div class="absolute -bottom-2 -right-2 bg-white shadow-md rounded-full p-1 border border-slate-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <button type="button" id="clear-avatar" class="absolute left-1/2 -bottom-8 -translate-x-1/2 text-xs text-red-500 bg-white px-2 py-1 rounded-full border border-slate-200 shadow-sm">ลบรูป</button>
+              </div>
+              <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                <div>
+                  <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ชื่อ-นามสกุล</label>
+                  <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น ยอดชาญ สุภาพรรณ">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ตำแหน่งงาน</label>
+                  <input type="text" id="title" name="title" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น Senior Frontend Developer">
+                </div>
+                <div class="md:col-span-2 flex gap-4">
+                  <div class="flex-1">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ที่อยู่ปัจจุบัน</label>
+                    <input type="text" id="location" name="location" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น กรุงเทพฯ, ประเทศไทย">
+                  </div>
+                  <div class="w-32">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Avatar ตัวย่อ</label>
+                    <input type="text" id="avatar" name="avatar" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น YS">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Contact Info -->
+          <section id="contact-info" class="editor-card">
+            <h2 class="section-title">ช่องทางติดต่อ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">อีเมล</label>
+                <input type="email" id="email" class="w-full px-4 py-2 rounded-lg bg-slate-50">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">เบอร์โทรศัพท์</label>
+                <input type="text" id="phone" class="w-full px-4 py-2 rounded-lg bg-slate-50">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">GitHub URL</label>
+                <input type="text" id="github" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="github.com/username">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">LinkedIn URL</label>
+                <input type="text" id="linkedin" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="linkedin.com/in/username">
+              </div>
+            </div>
+          </section>
+
+          <!-- Summary -->
+          <section id="summary-info" class="editor-card">
+            <h2 class="section-title">สรุปภาพรวม (Professional Summary)</h2>
+            <textarea id="summary" class="w-full px-4 py-2 rounded-lg bg-slate-50 min-h-[120px]" placeholder="บรรยายเกี่ยวกับประสบการณ์และเป้าหมายของคุณ..."></textarea>
+          </section>
+
+          <!-- Education -->
+          <section id="education-info" class="editor-card">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="section-title mb-0">ประวัติการศึกษา</h2>
+              <button type="button" id="add-edu" class="text-indigo-600 text-sm font-semibold cursor-pointer bg-none border-none">+ เพิ่ม</button>
+            </div>
+            <div id="edu-list" class="space-y-4">
+              <!-- JS: Education items -->
+            </div>
+          </section>
+
+          <!-- Skills -->
+          <section id="skills-info" class="editor-card">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="section-title mb-0">ทักษะความสามารถ</h2>
+              <button type="button" id="add-skill" class="text-indigo-600 text-sm font-semibold cursor-pointer bg-none border-none">+ เพิ่มทักษะ</button>
+            </div>
+            <div id="skills-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- JS: Skills -->
+            </div>
+          </section>
+
+          <!-- Experience -->
+          <section id="experience-info" class="editor-card">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="section-title mb-0">ประสบการณ์ทำงาน</h2>
+              <button type="button" id="add-exp" class="text-indigo-600 text-sm font-semibold cursor-pointer bg-none border-none">+ เพิ่มรายการ</button>
+            </div>
+            <div id="exp-list" class="space-y-4">
+              <!-- JS: Experiences -->
+            </div>
+          </section>
+
+          <!-- Tools -->
+          <section id="tools-info" class="editor-card">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="section-title mb-0">เครื่องมือและเทคโนโลยี</h2>
+              <button type="button" id="add-tool" class="text-indigo-600 text-sm font-semibold cursor-pointer bg-none border-none">+ เพิ่ม</button>
+            </div>
+            <div id="tools-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- JS: Tools -->
+            </div>
+          </section>
+
+          <!-- Soft Skills -->
+          <section id="soft-skills-info" class="editor-card">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="section-title mb-0">ทักษะด้าน Soft Skills</h2>
+              <button type="button" id="add-soft-skill" class="text-indigo-600 text-sm font-semibold cursor-pointer bg-none border-none">+ เพิ่ม</button>
+            </div>
+            <div id="soft-skills-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- JS: Soft Skills -->
+            </div>
+          </section>
+
+          <!-- Projects -->
+          <section id="projects-info" class="editor-card">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="section-title mb-0">โปรเจกต์ที่ผ่านมา</h2>
+              <button type="button" id="add-project" class="text-indigo-600 text-sm font-semibold cursor-pointer bg-none border-none">+ เพิ่มโปรเจกต์</button>
+            </div>
+            <div id="projects-list" class="space-y-4">
+              <!-- JS: Projects -->
+            </div>
+          </section>
+
+          <!-- Floating Save Button -->
+          <div class="fixed bottom-6 right-6 lg:static mt-10 flex flex-col gap-3 w-full max-w-sm">
+            <button id="save" type="button" class="btn-primary shadow-2xl shadow-indigo-300 w-full lg:w-auto text-lg py-4 lg:py-3 flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              บันทึกข้อมูลทั้งหมด
+            </button>
+            <button id="clear-all" type="button" class="w-full text-sm py-3 rounded-xl border border-red-300 text-red-600 bg-white hover:bg-red-50 transition">
+              ล้างข้อมูลทั้งหมด
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="scripts.js"></script>
+  <script>
+    (function(){
+      const api = window.resumeStorage;
+      let avatarCleared = false;
+      if(!api) {
+        window.resumeStorage = {
+          load: () => JSON.parse(localStorage.getItem('resume_data_v1') || '{"contact":{},"education":[],"skills":[],"experience":[],"projects":[]}'),
+          save: (d) => localStorage.setItem('resume_data_v1', JSON.stringify(d)),
+          render: () => {}
+        };
+      }
+
+      function el(tag, attrs={}, children=[]){
+        const e = document.createElement(tag);
+        Object.entries(attrs).forEach(([k, v]) => {
+          if(k === 'class') e.className = v;
+          else if(k === 'style') e.style.cssText = v;
+          else e.setAttribute(k, v);
+        });
+        children.forEach(c => typeof c === 'string' ? e.appendChild(document.createTextNode(c)) : e.appendChild(c));
+        return e;
+      }
+
+      function showToast(msg){
+        const t = el('div', {class: 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-xl z-[100] text-sm font-medium'}, [msg]);
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
+      }
+
+      // --- Item Creators ---
+      
+      function createEduItem(data = {}) {
+        const wrap = el('div', {class: 'p-4 border border-slate-100 rounded-xl bg-slate-50 relative group'});
+        const remove = el('button', {type:'button', class:'absolute top-2 right-2 btn-remove opacity-0 group-hover:opacity-100 transition-opacity'}, ['ลบ']);
+        remove.onclick = () => wrap.remove();
+        
+        const grid = el('div', {class: 'grid grid-cols-1 md:grid-cols-2 gap-3'}, [
+          el('div', {}, [
+            el('label', {class:'block text-[10px] font-bold text-slate-400 uppercase mb-1'}, ['วุฒิการศึกษา']),
+            el('input', {class: 'w-full px-3 py-1.5 rounded-md text-sm border-0 shadow-sm', value: data.degree || '', placeholder: 'เช่น ปริญญาตรี วศ.บ.'})
+          ]),
+          el('div', {}, [
+            el('label', {class:'block text-[10px] font-bold text-slate-400 uppercase mb-1'}, ['สาขาที่เรียน']),
+            el('input', {class: 'w-full px-3 py-1.5 rounded-md text-sm border-0 shadow-sm', value: data.major || '', placeholder: 'เช่น วิศวกรรมซอฟต์แวร์'})
+          ]),
+          el('div', {}, [
+            el('label', {class:'block text-[10px] font-bold text-slate-400 uppercase mb-1'}, ['มหาวิทยาลัย']),
+            el('input', {class: 'w-full px-3 py-1.5 rounded-md text-sm border-0 shadow-sm', value: data.institution || '', placeholder: 'ชื่อสถาบัน'})
+          ]),
+          el('div', {}, [
+            el('label', {class:'block text-[10px] font-bold text-slate-400 uppercase mb-1'}, ['ระยะเวลา']),
+            el('input', {class: 'w-full px-3 py-1.5 rounded-md text-sm border-0 shadow-sm', value: data.period || '', placeholder: '2018 - 2022'})
+          ]),
+          el('div', {}, [
+            el('label', {class:'block text-[10px] font-bold text-slate-400 uppercase mb-1'}, ['สถานที่']),
+            el('input', {class: 'w-full px-3 py-1.5 rounded-md text-sm border-0 shadow-sm', value: data.location || '', placeholder: 'กรุงเทพฯ'})
+          ])
+        ]);
+        wrap.append(remove, grid);
+        return wrap;
+      }
+
+      function createSkillRow(data = {}) {
+        const wrap = el('div', {class: 'flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-100 shadow-sm'});
+        const nameIn = el('input', {class: 'flex-1 px-4 py-2 text-sm border border-slate-200 rounded-md focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500', value: typeof data === 'string' ? data : (data.name || ''), placeholder: 'ชื่อทักษะ เช่น HTML/CSS'});
+        const del = el('button', {type: 'button', class: 'text-slate-300 hover:text-red-400 px-2'}, ['×']);
+        del.onclick = () => wrap.remove();
+        wrap.append(nameIn, del);
+        return wrap;
+      }
+
+      function createToolRow(name='') {
+        const wrap = el('div', {class: 'flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-100 shadow-sm'});
+        const nameIn = el('input', {class: 'flex-1 px-3 py-1 text-sm border-0 focus:ring-0', value: name, placeholder: 'เช่น Git, Figma, VS Code'});
+        const del = el('button', {type: 'button', class: 'text-slate-300 hover:text-red-400 px-2'}, ['×']);
+        del.onclick = () => wrap.remove();
+        wrap.append(nameIn, del);
+        return wrap;
+      }
+
+      function createSoftSkillRow(name='') {
+        const wrap = el('div', {class: 'flex items-center gap-2 p-2 bg-white rounded-lg border border-slate-100 shadow-sm'});
+        const nameIn = el('input', {class: 'flex-1 px-3 py-1 text-sm border-0 focus:ring-0', value: name, placeholder: 'เช่น การทำงานเป็นทีม'});
+        const del = el('button', {type: 'button', class: 'text-slate-300 hover:text-red-400 px-2'}, ['×']);
+        del.onclick = () => wrap.remove();
+        wrap.append(nameIn, del);
+        return wrap;
+      }
+
+      function createProjectItem(data = {}) {
+        const wrap = el('div', {class: 'p-4 border border-slate-100 rounded-xl bg-slate-50 relative group'});
+        const remove = el('button', {type:'button', class:'absolute top-2 right-2 btn-remove opacity-0 group-hover:opacity-100 transition-opacity'}, ['ลบ']);
+        remove.onclick = () => wrap.remove();
+        
+        const content = el('div', {class: 'space-y-3'}, [
+          el('div', {}, [
+            el('label', {class:'block text-[10px] font-bold text-slate-400 uppercase mb-1'}, ['ชื่อโปรเจกต์']),
+            el('input', {class: 'w-full px-3 py-1.5 rounded-md text-sm border-0 shadow-sm', value: data.title || '', placeholder: 'ชื่อโปรเจกต์'})
+          ]),
+          el('div', {}, [
+            el('label', {class:'block text-[10px] font-bold text-slate-400 uppercase mb-1'}, ['รายละเอียด']),
+            el('textarea', {class: 'w-full px-3 py-1.5 rounded-md text-sm border-0 shadow-sm min-h-[60px]', placeholder: 'บรรยายเกี่ยวกับโปรเจกต์'}, [data.desc || ''])
+          ])
+        ]);
+        wrap.append(remove, content);
+        return wrap;
+      }
+
+      function createExpItem(data = {}) {
+        const wrap = el('div', {class: 'p-5 border border-slate-100 rounded-xl bg-white shadow-sm relative group'});
+        const remove = el('button', {type:'button', class:'absolute top-3 right-3 btn-remove opacity-0 group-hover:opacity-100 transition-opacity'}, ['ลบ']);
+        remove.onclick = () => wrap.remove();
+        const content = el('div', {class: 'space-y-4 text-sm'}, [
+          el('div', {class: 'grid grid-cols-2 gap-4'}, [
+            el('input', {class: 'w-full px-3 py-2 rounded-lg bg-slate-50', placeholder: 'ตำแหน่งงาน', value: data.title || ''}),
+            el('input', {class: 'w-full px-3 py-2 rounded-lg bg-slate-50', placeholder: 'ชื่อบริษัท/องค์กร', value: data.company || ''})
+          ]),
+          el('div', {class: 'grid grid-cols-2 gap-4'}, [
+            el('input', {class: 'w-full px-3 py-2 rounded-lg bg-slate-50', placeholder: 'ช่วงเวลา เช่น มิ.ย. 2021 - ปัจจุบัน', value: data.period || ''}),
+            el('input', {class: 'w-full px-3 py-2 rounded-lg bg-slate-50', placeholder: 'สถานที่', value: data.location || ''})
+          ]),
+          el('textarea', {class: 'w-full px-3 py-2 rounded-lg bg-slate-50 min-h-[80px]', placeholder: 'รายละเอียดงาน (แยกบรรทัด)'}, [(data.bullets || []).join('\n')])
+        ]);
+        wrap.append(remove, content);
+        return wrap;
+      }
+
+      // --- Core Logic ---
+
+      function fill() {
+        avatarCleared = false;
+        const data = window.resumeStorage.load();
+        document.getElementById('name').value = data.name || '';
+        document.getElementById('title').value = data.title || '';
+        document.getElementById('location').value = data.location || '';
+        document.getElementById('avatar').value = data.avatar || '';
+        document.getElementById('email').value = data.contact?.email || '';
+        document.getElementById('phone').value = data.contact?.phone || '';
+        document.getElementById('github').value = data.contact?.github || '';
+        document.getElementById('linkedin').value = data.contact?.linkedin || '';
+        document.getElementById('summary').value = data.summary || '';
+        document.getElementById('avatar-file').value = '';
+
+        const preview = document.getElementById('avatar-preview');
+        if(data.avatarImage) {
+          preview.innerHTML = `<img src="${data.avatarImage}" class="w-full h-full object-cover">`;
+        } else {
+          preview.textContent = data.avatar || 'YS';
+        }
+
+        const eduRoot = document.getElementById('edu-list');
+        eduRoot.innerHTML = '';
+        (data.education || []).forEach(e => eduRoot.appendChild(createEduItem(e)));
+
+        const skillRoot = document.getElementById('skills-list');
+        skillRoot.innerHTML = '';
+        (data.skills || []).forEach(s => skillRoot.appendChild(createSkillRow(s)));
+
+        const expRoot = document.getElementById('exp-list');
+        expRoot.innerHTML = '';
+        (data.experience || []).forEach(e => expRoot.appendChild(createExpItem(e)));
+
+        const toolRoot = document.getElementById('tools-list');
+        toolRoot.innerHTML = '';
+        (data.tools || []).forEach(t => toolRoot.appendChild(createToolRow(t)));
+
+        const softSkillRoot = document.getElementById('soft-skills-list');
+        softSkillRoot.innerHTML = '';
+        (data.softSkills || []).forEach(s => softSkillRoot.appendChild(createSoftSkillRow(s)));
+
+        const projRoot = document.getElementById('projects-list');
+        projRoot.innerHTML = '';
+        (data.projects || []).forEach(p => projRoot.appendChild(createProjectItem(p)));
+      }
+
+      function collect() {
+        const data = window.resumeStorage.load();
+        data.name = document.getElementById('name').value;
+        data.title = document.getElementById('title').value;
+        data.location = document.getElementById('location').value;
+        data.avatar = document.getElementById('avatar').value;
+        data.contact = {
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          github: document.getElementById('github').value,
+          linkedin: document.getElementById('linkedin').value
+        };
+        data.summary = document.getElementById('summary').value;
+
+        data.education = [...document.querySelectorAll('#edu-list > div')].map(div => {
+          const ins = div.querySelectorAll('input');
+          return { degree: ins[0].value, major: ins[1].value, institution: ins[2].value, period: ins[3].value, location: ins[4].value };
+        });
+
+        data.skills = [...document.querySelectorAll('#skills-list > div')].map(div => {
+          const inp = div.querySelector('input');
+          return { name: inp.value };
+        });
+
+        data.experience = [...document.querySelectorAll('#exp-list > div')].map(div => {
+          const ins = div.querySelectorAll('input');
+          const area = div.querySelector('textarea');
+          return { 
+            title: ins[0].value, 
+            company: ins[1].value, 
+            period: ins[2].value,
+            location: ins[3].value,
+            bullets: area.value.split('\n').filter(t => t.trim())
+          };
+        });
+
+        data.tools = [...document.querySelectorAll('#tools-list > div')].map(div => {
+          const inp = div.querySelector('input');
+          return inp.value;
+        }).filter(t => t.trim());
+
+        data.softSkills = [...document.querySelectorAll('#soft-skills-list > div')].map(div => {
+          const inp = div.querySelector('input');
+          return inp.value;
+        }).filter(t => t.trim());
+
+        data.projects = [...document.querySelectorAll('#projects-list > div')].map(div => {
+          const ins = div.querySelectorAll('input');
+          const area = div.querySelector('textarea');
+          return { title: ins[0].value, desc: area.value };
+        });
+        return data;
+      }
+
+      // --- Event Listeners ---
+
+      document.getElementById('add-edu').onclick = () => document.getElementById('edu-list').appendChild(createEduItem());
+      document.getElementById('add-skill').onclick = () => document.getElementById('skills-list').appendChild(createSkillRow());
+      document.getElementById('add-exp').onclick = () => document.getElementById('exp-list').appendChild(createExpItem());
+      document.getElementById('add-tool').onclick = () => document.getElementById('tools-list').appendChild(createToolRow());
+      document.getElementById('add-soft-skill').onclick = () => document.getElementById('soft-skills-list').appendChild(createSoftSkillRow());
+      document.getElementById('add-project').onclick = () => document.getElementById('projects-list').appendChild(createProjectItem());
+
+      async function saveCurrentData() {
+        const newData = collect();
+        const file = document.getElementById('avatar-file').files[0];
+        if(file) {
+          avatarCleared = false;
+          return new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              newData.avatarImage = ev.target.result;
+              window.resumeStorage.save(newData);
+              resolve();
+            };
+            reader.readAsDataURL(file);
+          });
+        } else {
+          if (avatarCleared) {
+            newData.avatarImage = null;
+          }
+          window.resumeStorage.save(newData);
+          return Promise.resolve();
+        }
+      }
+
+      document.getElementById('save').onclick = async () => {
+        await saveCurrentData();
+        showToast('บันทึกข้อมูลเรียบร้อยแล้ว ✨');
+        fill();
+      };
+
+      document.getElementById('download-pdf').onclick = async (e) => {
+        e.preventDefault();
+        await saveCurrentData();
+        window.location.href = 'index.html?print=true';
+      };
+
+      document.getElementById('clear-all').onclick = () => {
+        if(confirm('คุณแน่ใจหรือไม่ว่าต้องการล้างข้อมูลทั้งหมด?')) {
+          localStorage.removeItem('resume_data_v1');
+          location.reload();
+        }
+      };
+
+      document.getElementById('avatar-file').onchange = function() {
+        avatarCleared = false;
+        const f = this.files[0];
+        if(f) {
+          const r = new FileReader();
+          r.onload = (e) => {
+            document.getElementById('avatar-preview').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+          };
+          r.readAsDataURL(f);
+        }
+      };
+
+      document.getElementById('clear-avatar').onclick = () => {
+        avatarCleared = true;
+        document.getElementById('avatar-file').value = '';
+        const preview = document.getElementById('avatar-preview');
+        const initials = document.getElementById('avatar').value || 'YS';
+        preview.textContent = initials;
+      };
+
+      document.getElementById('reset-btn').onclick = () => {
+        if(confirm('คุณแน่ใจหรือไม่ว่าต้องการล้างข้อมูลทั้งหมด?')) {
+          localStorage.removeItem('resume_data_v1');
+          location.reload();
+        }
+      };
+
+      fill();
+    })();
+  </script>
+</body>
+</html>
