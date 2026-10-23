@@ -782,3 +782,17 @@ html[data-template="resume-sidebar"] .sidebar .profile-card:first-child .section
 }
 @media(max-width:900px){html[data-template="resume-sidebar"] .main-grid{grid-template-columns:1fr}html[data-template="resume-sidebar"] .sidebar{position:static}}
 @media(max-width:600px){html[data-template="cv-classic"] .header-grid>div:last-child{position:static;transform:none;justify-content:center;margin-top:14px}html[data-template="resume-minimal"] .sidebar{grid-template-columns:1fr}}
+
+/* Builder editor usability refinements. */
+@media (max-width: 720px) {
+  .glass-nav { padding: 12px 0; }
+  .glass-nav > div { align-items: flex-start; gap: 12px; }
+  .glass-nav h1 { font-size: 16px; }
+  .glass-nav p { max-width: 22ch; line-height: 1.55; }
+  .glass-nav .flex.gap-4 { flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+  .glass-nav button, .glass-nav a { min-height: 40px; padding: 8px 10px; font-size: 12px; }
+  .editor-card { padding: 18px; border-radius: 14px; }
+  .section-title { line-height: 1.55; }
+  .btn-primary, .btn-add, .btn-remove { min-height: 42px; }
+  input, textarea, select { font: inherit; line-height: 1.5; }
+}
