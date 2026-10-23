@@ -8,6 +8,34 @@
   var closeButton = dialog.querySelector('.dialog-close');
   var activeCard = null;
 
+  // Give every visual design two explicit variants: with and without a photo.
+  document.querySelectorAll('.template-card').forEach(function (card) {
+    var originalTemplate = card.dataset.template;
+    var originalTitle = card.dataset.title;
+    var photoCard = card.cloneNode(true);
+    [
+      { target: card, suffix: 'no-photo', label: 'ไม่มีรูป', hasPhoto: false },
+      { target: photoCard, suffix: 'photo', label: 'มีรูป', hasPhoto: true }
+    ].forEach(function (variant) {
+      variant.target.dataset.template = originalTemplate + '-' + variant.suffix;
+      variant.target.dataset.title = originalTitle + ' · ' + variant.label;
+      variant.target.dataset.hasPhoto = String(variant.hasPhoto);
+      variant.target.dataset.description += variant.hasPhoto ? ' พร้อมพื้นที่สำหรับรูปโปรไฟล์' : ' โดยไม่แสดงรูปโปรไฟล์';
+      variant.target.querySelector('.template-kind').textContent += variant.hasPhoto ? ' · มีรูป' : ' · ไม่มีรูป';
+      var blurb = variant.target.querySelector('.template-info p');
+      var descriptionLine = blurb.innerHTML.split('<br>')[0];
+      blurb.innerHTML = descriptionLine + '<br>' + (variant.hasPhoto ? 'มีพื้นที่สำหรับรูปโปรไฟล์' : 'ไม่แสดงรูปโปรไฟล์');
+      var paper = variant.target.querySelector('.mini-paper');
+      paper.classList.toggle('photo-preview', variant.hasPhoto);
+      paper.classList.toggle('no-photo-preview', !variant.hasPhoto);
+    });
+    card.after(photoCard);
+  });
+
+  document.querySelectorAll('.template-count').forEach(function (count) {
+    count.textContent = '06 แบบ';
+  });
+
   function beginCreation(card) {
     var template = card.dataset.template;
     localStorage.setItem('forma_selected_template', template);

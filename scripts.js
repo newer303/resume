@@ -103,7 +103,7 @@ function renderResume() {
 
   const avatarEl = document.getElementById('res-avatar');
   const selectedTemplateId = document.documentElement.dataset.template || '';
-  const showAvatar = selectedTemplateId.startsWith('resume-');
+  const showAvatar = selectedTemplateId.endsWith('-photo') || (!selectedTemplateId.endsWith('-no-photo') && selectedTemplateId.startsWith('resume-'));
   if (avatarEl) {
     avatarEl.hidden = !showAvatar;
     if (data.avatarImage) {
