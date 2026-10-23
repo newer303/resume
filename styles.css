@@ -845,3 +845,65 @@ html[data-template$="-photo"] #res-avatar { display: flex; }
   .layout-controls { display: none !important; }
   .arranging-sections .layout-section { padding: 0; border: 0; }
 }
+
+/* Match the rendered page structure to the six template previews. */
+html[data-template^="cv-modern"] .main-grid { grid-template-columns: 320px minmax(0, 1fr); }
+html[data-template^="cv-modern"] .sidebar { display: flex; flex-direction: column; gap: 16px; }
+html[data-template^="cv-modern"] .content { min-width: 0; }
+
+html[data-template^="cv-classic"] .main-grid,
+html[data-template^="resume-professional"] .main-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+html[data-template^="cv-classic"] .sidebar,
+html[data-template^="cv-classic"] .content,
+html[data-template^="resume-professional"] .sidebar,
+html[data-template^="resume-professional"] .content { display: contents; }
+html[data-template^="cv-classic"] .sidebar > .profile-card:first-child { order: 1; }
+html[data-template^="cv-classic"] .content > [data-layout-section="summary"] { order: 2; }
+html[data-template^="cv-classic"] .content > [data-layout-section="experience"] { order: 3; }
+html[data-template^="cv-classic"] .education-layout-section { order: 4; }
+html[data-template^="cv-classic"] .content > [data-layout-section="projects"] { order: 5; }
+html[data-template^="cv-classic"] .profile-card { width: 100%; padding: 22px 26px; }
+html[data-template^="cv-classic"] .summary-heading { font-family: Georgia, 'Sarabun', serif; }
+html[data-template^="cv-classic"] .layout-section h2 { font-family: Georgia, 'Sarabun', serif; }
+html[data-template^="cv-classic"] .content .summary-box { background: transparent; border: 0; padding: 0 26px; }
+html[data-template^="cv-classic"] .content .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+html[data-template^="resume-professional"] .sidebar > .profile-card:first-child { order: 1; }
+html[data-template^="resume-professional"] .content > [data-layout-section="summary"] { order: 2; }
+html[data-template^="resume-professional"] .content > [data-layout-section="experience"] { order: 3; }
+html[data-template^="resume-professional"] .education-layout-section { order: 4; }
+html[data-template^="resume-professional"] .content > [data-layout-section="projects"] { order: 5; }
+html[data-template^="resume-professional"] .profile-card,
+html[data-template^="resume-professional"] .layout-section { width: 100%; }
+html[data-template^="resume-professional"] .sidebar > .profile-card:first-child { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+html[data-template^="resume-professional"] .sidebar > .profile-card:first-child #res-avatar,
+html[data-template^="resume-professional"] .sidebar > .profile-card:first-child #res-profile-name,
+html[data-template^="resume-professional"] .sidebar > .profile-card:first-child #res-profile-handle { grid-column: 1 / -1; }
+html[data-template^="resume-professional"] .layout-section h2 { border-bottom: 1px solid #dce8e4; padding-bottom: 10px; }
+
+html[data-template^="cv-creative"] .main-grid { grid-template-columns: minmax(230px, .8fr) minmax(0, 1.2fr); gap: 26px; }
+html[data-template^="cv-creative"] .sidebar > .profile-card:first-child { background: #fff; border-top: 5px solid #8b48b8; }
+html[data-template^="cv-creative"] .sidebar > .profile-card:first-child .section-title { color: #8b48b8; }
+html[data-template^="cv-creative"] .content .summary-box { background: #fff; border-left: 4px solid #8b48b8; }
+html[data-template^="cv-creative"] .layout-section h2 { color: #713b94; }
+
+html[data-template^="resume-sidebar"] .sidebar { position: sticky; top: 24px; align-self: start; }
+html[data-template^="resume-sidebar"] .sidebar > .profile-card:first-child { min-height: 420px; }
+html[data-template^="resume-sidebar"] .content > .education-layout-section .profile-card { border-left: 4px solid #f1c56b; }
+html[data-template^="resume-sidebar"] .content > .layout-section h2 { color: #182a45; }
+
+html[data-template^="resume-minimal"] .summary-heading { border-bottom: 1px solid #dfe3e8; padding-bottom: 10px; }
+html[data-template^="resume-minimal"] .layout-section h2 { font-weight: 600; letter-spacing: .01em; }
+html[data-template^="resume-minimal"] .content .summary-box { line-height: 1.9; }
+
+html[data-template] .summary-heading { margin: 0 0 12px; }
+html[data-template] .education-layout-section > .layout-controls { width: 100%; }
+@media (max-width: 900px) {
+  html[data-template^="cv-modern"] .main-grid,
+  html[data-template^="cv-creative"] .main-grid { grid-template-columns: minmax(0, 1fr); }
+  html[data-template^="resume-sidebar"] .sidebar { position: static; }
+}

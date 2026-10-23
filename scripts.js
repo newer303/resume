@@ -70,6 +70,7 @@ function renderResume() {
   localStorage.setItem('forma_selected_template', selectedTemplate);
   document.documentElement.dataset.template = selectedTemplate;
   document.body.dataset.template = selectedTemplate;
+  setupTemplateLayout(selectedTemplate);
   let data = window.resumeStorage ? window.resumeStorage.load() : currentData;
   data = Object.assign({}, defaultData, data || {});
   data.contact = Object.assign({}, defaultData.contact, data.contact || {});
@@ -247,8 +248,8 @@ function renderResume() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initializeSectionOrganizer();
   renderResume();
+  initializeSectionOrganizer();
 
   // Auto-print if opened from editor with ?print=true
   const params = new URLSearchParams(window.location.search);
@@ -264,7 +265,7 @@ function initializeSectionOrganizer() {
 
   const template = localStorage.getItem('forma_selected_template') || 'resume-professional';
   const storageKey = 'forma_layout_' + template;
-  const labels = { summary: 'แนะนำตัว', experience: 'ประสบการณ์ทำงาน', projects: 'ผลงานโปรเจกต์' };
+  const labels = { summary: 'แนะนำตัว', experience: 'ประสบการณ์ทำงาน', education: 'การศึกษา', projects: 'ผลงานโปรเจกต์' };
   const sections = [...content.querySelectorAll('[data-layout-section]')];
   let activeDrag = null;
 
@@ -301,7 +302,18 @@ function initializeSectionOrganizer() {
 
   try {
     const savedOrder = JSON.parse(localStorage.getItem(storageKey) || '[]');
-    savedOrder.forEach(id => {
+    const defaultOrder = sections.map(section => section.dataset.layoutSection);
+    const validSavedOrder = Array.isArray(savedOrder)
+      ? savedOrder.filter((id, index) => defaultOrder.includes(id) && savedOrder.indexOf(id) === index)
+      : [];
+    const mergedOrder = [...validSavedOrder];
+    defaultOrder.forEach((id, index) => {
+      if (mergedOrder.includes(id)) return;
+      const nextDefaultSection = defaultOrder.slice(index + 1).find(nextId => mergedOrder.includes(nextId));
+      if (nextDefaultSection) mergedOrder.splice(mergedOrder.indexOf(nextDefaultSection), 0, id);
+      else mergedOrder.push(id);
+    });
+    mergedOrder.forEach(id => {
       const section = sections.find(item => item.dataset.layoutSection === id);
       if (section) content.appendChild(section);
     });
@@ -340,6 +352,22 @@ function initializeSectionOrganizer() {
   };
 
   updateControls();
+}
+
+function setupTemplateLayout(template) {
+  const education = document.querySelector('.education-layout-section');
+  const sidebar = document.querySelector('.sidebar');
+  const content = document.querySelector('.content');
+  if (!education || !sidebar || !content) return;
+
+  if (template.startsWith('resume-sidebar')) {
+    // The Sidebar design places education with the main experience timeline.
+    const projects = content.querySelector('[data-layout-section="projects"]');
+    content.insertBefore(education, projects || null);
+  } else {
+    // The other designs group education with the sidebar profile details.
+    sidebar.appendChild(education);
+  }
 }
 
 function toggleSectionArrange() {}
