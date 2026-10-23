@@ -353,7 +353,7 @@
       if (label) {
         const titles = { 'cv-modern':'CV · Modern', 'cv-classic':'CV · Classic', 'cv-creative':'CV · Creative', 'resume-professional':'Resume · Professional', 'resume-minimal':'Resume · Minimal', 'resume-sidebar':'Resume · Sidebar' };
         const baseTemplate = template.replace(/-(photo|no-photo)$/, '');
-        const photoChoice = template.endsWith('-photo') ? ' · มีรูป' : template.endsWith('-no-photo') ? ' · ไม่มีรูป' : '';
+        const photoChoice = template.endsWith('-no-photo') ? ' · ไม่มีรูป' : template.endsWith('-photo') ? ' · มีรูป' : '';
         label.textContent = (titles[baseTemplate] || 'Resume') + photoChoice;
       }
     })();
