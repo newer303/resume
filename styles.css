@@ -810,3 +810,38 @@ html[data-template$="-photo"] #avatar-upload-group { display: block; }
 html[data-template$="-photo"] #res-avatar { display: flex; }
 .photo-preview::after { content:""; position:absolute; top:17px; right:16px; width:27px; height:27px; border:3px solid #fff; border-radius:50%; background:linear-gradient(145deg,#c8d4f8 0 48%,#7688bd 49%); box-shadow:0 1px 4px #25304b33; }
 .mini-sidebar.photo-preview::after { top:18px; left:16px; right:auto; width:27px; height:27px; }
+
+/* Reorder the main resume sections after saving profile data. */
+.layout-controls[hidden] { display: none !important; }
+.layout-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 45%, white);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 6%, white);
+  color: var(--text);
+  font-size: 12px;
+}
+.layout-controls strong { flex: 1; }
+.layout-controls button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, white);
+  border-radius: 8px;
+  background: white;
+  color: var(--accent);
+  font-size: 17px;
+  cursor: pointer;
+}
+.layout-controls button:disabled { opacity: .35; cursor: default; }
+.layout-drag-handle { color: var(--accent); font-size: 19px; cursor: grab; }
+.arranging-sections .layout-section { padding: 8px; border: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent); border-radius: 12px; }
+.arranging-sections .layout-section.is-dragging { opacity: .45; }
+#arrange-sections[aria-pressed="true"] { outline: 2px solid rgba(255,255,255,.65); }
+@media print {
+  .layout-controls { display: none !important; }
+  .arranging-sections .layout-section { padding: 0; border: 0; }
+}

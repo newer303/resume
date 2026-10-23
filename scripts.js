@@ -246,6 +246,7 @@ function renderResume() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initializeSectionOrganizer();
   renderResume();
 
   // Auto-print if opened from editor with ?print=true
@@ -254,6 +255,93 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => exportPDF(), 500);
   }
 });
+
+function initializeSectionOrganizer() {
+  const content = document.querySelector('.content');
+  const toggle = document.getElementById('arrange-sections');
+  if (!content || !toggle) return;
+
+  const template = localStorage.getItem('forma_selected_template') || 'resume-professional';
+  const storageKey = 'forma_layout_' + template;
+  const labels = { summary: 'แนะนำตัว', experience: 'ประสบการณ์ทำงาน', projects: 'ผลงานโปรเจกต์' };
+  const sections = [...content.querySelectorAll('[data-layout-section]')];
+  let activeDrag = null;
+
+  function saveOrder() {
+    const order = [...content.querySelectorAll('[data-layout-section]')].map(section => section.dataset.layoutSection);
+    localStorage.setItem(storageKey, JSON.stringify(order));
+  }
+
+  function move(section, direction) {
+    const siblings = [...content.querySelectorAll('[data-layout-section]')];
+    const index = siblings.indexOf(section);
+    const target = siblings[index + direction];
+    if (!target) return;
+    if (direction < 0) content.insertBefore(section, target);
+    else content.insertBefore(target, section);
+    saveOrder();
+    updateControls();
+  }
+
+  function updateControls() {
+    const current = [...content.querySelectorAll('[data-layout-section]')];
+    current.forEach((section, index) => {
+      const controls = section.querySelector('.layout-controls');
+      controls.hidden = !document.body.classList.contains('arranging-sections');
+      controls.innerHTML = '<span class="layout-drag-handle" aria-hidden="true">⠿</span><strong>' + labels[section.dataset.layoutSection] + '</strong>' +
+        '<button type="button" aria-label="เลื่อน' + labels[section.dataset.layoutSection] + 'ขึ้น" ' + (index === 0 ? 'disabled' : '') + '>↑</button>' +
+        '<button type="button" aria-label="เลื่อน' + labels[section.dataset.layoutSection] + 'ลง" ' + (index === current.length - 1 ? 'disabled' : '') + '>↓</button>';
+      const buttons = controls.querySelectorAll('button');
+      buttons[0].addEventListener('click', () => move(section, -1));
+      buttons[1].addEventListener('click', () => move(section, 1));
+      section.draggable = document.body.classList.contains('arranging-sections');
+    });
+  }
+
+  try {
+    const savedOrder = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    savedOrder.forEach(id => {
+      const section = sections.find(item => item.dataset.layoutSection === id);
+      if (section) content.appendChild(section);
+    });
+  } catch (error) {
+    localStorage.removeItem(storageKey);
+  }
+
+  sections.forEach(section => {
+    section.addEventListener('dragstart', event => {
+      if (!document.body.classList.contains('arranging-sections')) { event.preventDefault(); return; }
+      activeDrag = section;
+      section.classList.add('is-dragging');
+      event.dataTransfer.effectAllowed = 'move';
+    });
+    section.addEventListener('dragend', () => {
+      section.classList.remove('is-dragging');
+      activeDrag = null;
+      saveOrder();
+      updateControls();
+    });
+    section.addEventListener('dragover', event => {
+      if (!activeDrag || activeDrag === section) return;
+      event.preventDefault();
+      const box = section.getBoundingClientRect();
+      const insertAfter = event.clientY > box.top + box.height / 2;
+      content.insertBefore(activeDrag, insertAfter ? section.nextSibling : section);
+    });
+  });
+
+  toggleSectionArrange = function () {
+    const active = document.body.classList.toggle('arranging-sections');
+    toggle.setAttribute('aria-pressed', String(active));
+    toggle.innerHTML = active ? 'เสร็จสิ้นการจัดเรียง' : 'จัดเรียงส่วน';
+    if (!active) saveOrder();
+    updateControls();
+  };
+
+  updateControls();
+}
+
+function toggleSectionArrange() {}
 
 function exportPDF() {
   const element = document.body;

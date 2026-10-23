@@ -35,6 +35,9 @@
                 <button class="btn-print" onclick="editProfile()">
                     <i data-lucide="edit" style="width:18px"></i> EDIT PROFILE
                 </button>
+                <button class="btn-print" id="arrange-sections" onclick="toggleSectionArrange()" aria-pressed="false">
+                    <i data-lucide="move" style="width:18px"></i> จัดเรียงส่วน
+                </button>
                 <button class="btn-print" onclick="exportPDF()">
                     <i data-lucide="download" style="width:18px"></i> EXPORT PDF
                 </button>
@@ -83,18 +86,19 @@
         <!-- Main Content -->
         <section class="content">
 
-            <div id="res-summary" class="summary-box">
-                <!-- JS rendering -->
+            <div class="layout-section" data-layout-section="summary">
+                <div class="layout-controls" aria-label="จัดตำแหน่งแนะนำตัว"></div>
+                <div id="res-summary" class="summary-box"><!-- JS rendering --></div>
             </div>
-
-            <h2><i data-lucide="briefcase"></i> ประสบการณ์ทำงาน</h2>
-            <div id="experience-render">
-                <!-- JS rendering -->
+            <div class="layout-section" data-layout-section="experience">
+                <div class="layout-controls" aria-label="จัดตำแหน่งประสบการณ์"></div>
+                <h2><i data-lucide="briefcase"></i> ประสบการณ์ทำงาน</h2>
+                <div id="experience-render"><!-- JS rendering --></div>
             </div>
-
-            <h2 style="margin-top:50px"><i data-lucide="layout"></i> ผลงานโปรเจกต์</h2>
-            <div class="project-grid" id="projects-render">
-                <!-- JS rendering -->
+            <div class="layout-section" data-layout-section="projects">
+                <div class="layout-controls" aria-label="จัดตำแหน่งผลงาน"></div>
+                <h2><i data-lucide="layout"></i> ผลงานโปรเจกต์</h2>
+                <div class="project-grid" id="projects-render"><!-- JS rendering --></div>
             </div>
         </section>
     </main>
