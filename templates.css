@@ -61,3 +61,35 @@ footer p { line-height: 1.9; }
 @media (prefers-reduced-motion: reduce) {
   .template-card:hover { transform: none; }
 }
+
+/* Make the photo choice visible in the miniature document, not just its label. */
+.mini-paper.photo-preview { outline: 2px solid rgba(90, 98, 232, .18); }
+.mini-paper.photo-preview .mini-modern-head::before,
+.mini-paper.photo-preview.mini-classic::before,
+.mini-paper.photo-preview .creative-banner::after,
+.mini-paper.photo-preview .professional-head::after,
+.mini-paper.photo-preview.mini-minimal::before {
+  content: "";
+  display: block;
+  flex: none;
+  width: 29px;
+  height: 35px;
+  border: 2px solid #fff;
+  border-radius: 9px;
+  background:
+    radial-gradient(ellipse at 50% 34%, #efc4a5 0 20%, transparent 21%),
+    radial-gradient(ellipse at 50% 100%, #6277a9 0 38%, transparent 39%),
+    linear-gradient(145deg, #e7ecfa, #c8d3ef);
+  box-shadow: 0 1px 5px rgba(30, 40, 70, .2);
+}
+.mini-paper.photo-preview .mini-modern-head::before { width: 30px; height: 35px; }
+.mini-paper.photo-preview.mini-classic::before { margin: 0 auto 7px; width: 31px; height: 38px; }
+.mini-paper.photo-preview .creative-banner { position: relative; padding-right: 58px; }
+.mini-paper.photo-preview .creative-banner::after { position: absolute; top: 15px; right: 14px; }
+.mini-paper.photo-preview .professional-head { position: relative; padding-right: 58px; }
+.mini-paper.photo-preview .professional-head::after { position: absolute; right: 14px; top: 15px; }
+.mini-paper.photo-preview.mini-minimal { position: relative; padding-right: 54px; }
+.mini-paper.photo-preview.mini-minimal::before { position: absolute; top: 18px; right: 13px; }
+.mini-sidebar:not(.photo-preview) .sidebar-strip .mini-avatar { display: none; }
+.mini-sidebar:not(.photo-preview) .sidebar-strip { padding-top: 18px; }
+.mini-sidebar.photo-preview .sidebar-strip .mini-avatar { width: 34px; height: 38px; border: 2px solid rgba(255,255,255,.9); border-radius: 9px; background: radial-gradient(ellipse at 50% 35%, #efc4a5 0 20%, transparent 21%),radial-gradient(ellipse at 50% 100%, #6277a9 0 38%, transparent 39%),linear-gradient(145deg,#e7ecfa,#c8d3ef); }
