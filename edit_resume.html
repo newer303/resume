@@ -114,8 +114,9 @@
           </svg>
         </div>
         <div>
-          <h1 class="font-bold text-lg leading-none">แก้ไขเรซูเม่</h1>
+          <h1 class="font-bold text-lg leading-none">สร้าง CV / Resume</h1>
           <p class="text-xs text-slate-500 mt-1">อัปเดตข้อมูลของคุณเพื่อสร้างโอกาสใหม่</p>
+          <span id="selected-template-label" class="inline-block mt-2 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[11px] font-semibold">ดีไซน์ที่เลือก</span>
         </div>
       </div>
       <div class="flex gap-4 items-center">
@@ -129,7 +130,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          กลับ
+          กลับไปเลือกดีไซน์
         </a>
       </div>
     </div>
@@ -205,7 +206,7 @@
               <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                 <div>
                   <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ชื่อ-นามสกุล</label>
-                  <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น ยอดชาญ สุภาพรรณ">
+                  <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น ชื่อ นามสกุล">
                 </div>
                 <div>
                   <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ตำแหน่งงาน</label>
@@ -338,6 +339,19 @@
     </div>
   </main>
 
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const template = params.get('template') || localStorage.getItem('forma_selected_template') || 'resume-professional';
+      localStorage.setItem('forma_selected_template', template);
+      window.resumeStorageKey = 'forma_resume_data_' + template;
+      const label = document.getElementById('selected-template-label');
+      if (label) {
+        const titles = { 'cv-modern':'CV · Modern', 'cv-classic':'CV · Classic', 'cv-creative':'CV · Creative', 'resume-professional':'Resume · Professional', 'resume-minimal':'Resume · Minimal', 'resume-sidebar':'Resume · Sidebar' };
+        label.textContent = titles[template] || 'Resume';
+      }
+    })();
+  </script>
   <script src="scripts.js"></script>
   <script>
     (function(){
@@ -345,8 +359,8 @@
       let avatarCleared = false;
       if(!api) {
         window.resumeStorage = {
-          load: () => JSON.parse(localStorage.getItem('resume_data_v1') || '{"contact":{},"education":[],"skills":[],"experience":[],"projects":[]}'),
-          save: (d) => localStorage.setItem('resume_data_v1', JSON.stringify(d)),
+          load: () => JSON.parse(localStorage.getItem(window.resumeStorageKey || 'forma_resume_data_default') || '{"contact":{},"education":[],"skills":[],"experience":[],"projects":[]}'),
+          save: (d) => localStorage.setItem(window.resumeStorageKey || 'forma_resume_data_default', JSON.stringify(d)),
           render: () => {}
         };
       }
@@ -609,12 +623,12 @@
       document.getElementById('download-pdf').onclick = async (e) => {
         e.preventDefault();
         await saveCurrentData();
-        window.location.href = 'index.html?print=true';
+        window.location.href = 'resume.html?print=true&template=' + encodeURIComponent(localStorage.getItem('forma_selected_template') || 'resume-professional');
       };
 
       document.getElementById('clear-all').onclick = () => {
         if(confirm('คุณแน่ใจหรือไม่ว่าต้องการล้างข้อมูลทั้งหมด?')) {
-          localStorage.removeItem('resume_data_v1');
+          localStorage.removeItem(window.resumeStorageKey || 'forma_resume_data_default');
           location.reload();
         }
       };
@@ -641,7 +655,7 @@
 
       document.getElementById('reset-btn').onclick = () => {
         if(confirm('คุณแน่ใจหรือไม่ว่าต้องการล้างข้อมูลทั้งหมด?')) {
-          localStorage.removeItem('resume_data_v1');
+          localStorage.removeItem(window.resumeStorageKey || 'forma_resume_data_default');
           location.reload();
         }
       };

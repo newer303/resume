@@ -1,108 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume — Yodchan Suphaphan</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Sarabun:wght@300;400;600;700&display=swap"
-        rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>สร้าง CV และ Resume ออนไลน์ | Forma</title>
+  <meta name="description" content="เลือกดีไซน์ CV หรือ Resume ดูตัวอย่างก่อนเริ่ม แล้วสร้างเอกสารสมัครงานของคุณได้ฟรี">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="templates.css">
 </head>
-
 <body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Forma หน้าแรก"><span class="brand-mark">F</span><span>forma<span class="brand-dot">.</span></span></a>
+    <nav aria-label="เมนูหลัก"><a href="#cv-templates">เทมเพลต CV</a><a href="#resume-templates">เทมเพลต Resume</a></nav>
+    <a class="nav-cta" href="#choose-template">เริ่มสร้าง <span aria-hidden="true">↗</span></a>
+  </header>
 
-    <header class="site-header">
-        <div class="container header-grid">
-            <div>
-                <h1 id="res-name" class="name">Yodchan Suphaphan</h1>
-                <p id="res-title" class="header-title">Full-Stack Developer</p>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                <button class="btn-print" onclick="editProfile()">
-                    <i data-lucide="edit" style="width:18px"></i> EDIT PROFILE
-                </button>
-                <button class="btn-print" onclick="exportPDF()">
-                    <i data-lucide="download" style="width:18px"></i> EXPORT PDF
-                </button>
-            </div>
+  <main>
+    <section class="hero" id="choose-template">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> YOUR NEXT CHAPTER STARTS HERE</p>
+        <h1>งานที่ใช่ เริ่มจาก<br><span>CV ที่เป็นตัวคุณ</span></h1>
+        <p class="hero-description">เลือกดีไซน์ที่ชอบ ใส่ข้อมูลของคุณ แล้วเตรียมเอกสารสมัครงานที่พร้อมส่งได้ในไม่กี่ขั้นตอน</p>
+        <a class="primary-button" href="#cv-templates">เลือกเทมเพลต <span aria-hidden="true">↓</span></a>
+        <div class="hero-proof"><span class="proof-icon">✓</span> ดูตัวอย่างก่อนสร้าง · แก้ไขได้ · ดาวน์โหลด PDF</div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="floating-note note-one"><span>✦</span> ดีไซน์ที่ใช่</div>
+        <div class="floating-note note-two"><span>↗</span> พร้อมสมัครงาน</div>
+        <div class="hero-paper">
+          <div class="paper-topline"></div><div class="paper-profile"><div class="paper-avatar"></div><div><i></i><i></i><i></i></div></div>
+          <div class="paper-section-title"></div><div class="paper-line long"></div><div class="paper-line"></div><div class="paper-line short"></div>
+          <div class="paper-section-title second"></div><div class="paper-row"><b></b><span><i></i><i></i></span></div><div class="paper-row"><b></b><span><i></i><i></i></span></div>
+          <div class="paper-footer"><span></span><span></span><span></span></div>
         </div>
-    </header>
+      </div>
+      <a href="#cv-templates" class="scroll-hint" aria-label="เลื่อนลงเพื่อเลือกเทมเพลต"><span></span></a>
+    </section>
 
-    <main class="container main-grid">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="profile-card">
-                <div id="res-avatar" class="avatar">YS</div>
-                <h3 id="res-profile-name" style="margin:0">ยอดชาญ สุภาพันธ์</h3>
-                <p id="res-profile-handle" style="color:var(--accent); font-size:13px; margin:5px 0 20px">@nell111-dev
-                </p>
+    <section class="template-section" id="cv-templates">
+      <div class="section-heading"><div><p class="eyebrow">01 / CURRICULUM VITAE</p><h2>เลือกดีไซน์ <span>CV</span></h2><p>แสดงทักษะ ประสบการณ์ และตัวตนของคุณให้ครบในหน้าเดียวหรือหลายหน้า</p></div><span class="template-count">03 แบบ</span></div>
+      <div class="template-grid">
+        <article class="template-card" data-template="cv-modern" data-kind="CV" data-title="Modern" data-description="เรียบสะอาด อ่านง่าย เหมาะกับสายงานดิจิทัลและองค์กรสมัยใหม่">
+          <div class="preview-stage"><div class="mini-paper mini-modern"><div class="mini-modern-head"><span class="mini-avatar"></span><div><b>YOUR NAME</b><small>YOUR PROFESSION</small></div></div><div class="mini-two-col"><div><i class="mini-label"></i><i class="mini-rule"></i><i class="mini-rule short"></i><i class="mini-label"></i><i class="mini-tag"></i><i class="mini-tag"></i><i class="mini-tag"></i></div><div><i class="mini-label"></i><i class="mini-rule"></i><i class="mini-rule"></i><i class="mini-rule short"></i><i class="mini-label"></i><i class="mini-rule"></i><i class="mini-rule short"></i></div></div></div><span class="preview-zoom">ดูตัวอย่าง <b>↗</b></span></div>
+          <div class="template-info"><div><span class="template-kind">CV · 01</span><h3>Modern</h3><p>เรียบง่าย ดูเป็นมืออาชีพ</p></div><button class="create-button" type="button">สร้าง <span>→</span></button></div>
+        </article>
+        <article class="template-card" data-template="cv-classic" data-kind="CV" data-title="Classic" data-description="รูปแบบคลาสสิก จัดลำดับข้อมูลชัดเจน เหมาะกับงานทางการและองค์กรทั่วไป">
+          <div class="preview-stage"><div class="mini-paper mini-classic"><div class="classic-name">YOUR NAME</div><div class="classic-subtitle">PROFESSIONAL TITLE</div><div class="classic-contact"></div><div class="classic-heading">PROFILE</div><i class="mini-rule"></i><i class="mini-rule"></i><div class="classic-heading">EXPERIENCE</div><i class="mini-rule"></i><i class="mini-rule"></i><i class="mini-rule short"></i><div class="classic-heading">EDUCATION</div><i class="mini-rule"></i></div><span class="preview-zoom">ดูตัวอย่าง <b>↗</b></span></div>
+          <div class="template-info"><div><span class="template-kind">CV · 02</span><h3>Classic</h3><p>เป็นทางการ อ่านสบายตา</p></div><button class="create-button" type="button">สร้าง <span>→</span></button></div>
+        </article>
+        <article class="template-card" data-template="cv-creative" data-kind="CV" data-title="Creative" data-description="ใช้สีและเลย์เอาต์ที่โดดเด่น เหมาะกับงานออกแบบ ครีเอทีฟ และสื่อสาร">
+          <div class="preview-stage"><div class="mini-paper mini-creative"><div class="creative-banner"><span class="mini-avatar"></span><b>YOUR NAME</b><small>CREATIVE PROFILE</small></div><div class="creative-body"><div class="classic-heading">ABOUT ME</div><i class="mini-rule"></i><i class="mini-rule short"></i><div class="creative-cols"><div><div class="classic-heading">SKILLS</div><i class="mini-tag"></i><i class="mini-tag"></i><i class="mini-tag"></i></div><div><div class="classic-heading">EXPERIENCE</div><i class="mini-rule"></i><i class="mini-rule short"></i></div></div></div></div><span class="preview-zoom">ดูตัวอย่าง <b>↗</b></span></div>
+          <div class="template-info"><div><span class="template-kind">CV · 03</span><h3>Creative</h3><p>มีสีสัน สื่อบุคลิกชัดเจน</p></div><button class="create-button" type="button">สร้าง <span>→</span></button></div>
+        </article>
+      </div>
+    </section>
 
-                <div class="section-title"><i data-lucide="user"></i> ติดต่อ</div>
-                <ul class="contact-list">
-                    <li><i data-lucide="mail"></i> <a id="res-email"
-                            href="mailto:nkegamer1@gmail.com">nkegamer1@gmail.com</a></li>
-                    <li><i data-lucide="smartphone"></i> <a id="res-phone" href="tel:+66 96-730-1189">+66 96-730-1189</a>
-                    </li>
-                    <!-- <li><i data-lucide="github"></i> <a id="res-github"
-                            href="https://github.com/newer303">github.com/newer303</a></li>
-                    <li><i data-lucide="linkedin"></i> <a id="res-linkedin"
-                            href="https://linkedin.com/yodchan-suphaphan">linkedin.com/yodchan-suphaphan</a></li> -->
-                    <li><i data-lucide="map-pin"></i> <span id="res-location-sidebar">Bangkok, Thailand</span></li>
-                </ul>
+    <section class="template-section resume-section" id="resume-templates">
+      <div class="section-heading"><div><p class="eyebrow">02 / PROFESSIONAL RESUME</p><h2>เลือกดีไซน์ <span>Resume</span></h2><p>เล่าเส้นทางการทำงานและผลงานของคุณให้ตรงกับตำแหน่งที่สมัคร</p></div><span class="template-count">03 แบบ</span></div>
+      <div class="template-grid">
+        <article class="template-card" data-template="resume-professional" data-kind="Resume" data-title="Professional" data-description="โครงสร้างชัดเจน เน้นประสบการณ์และผลงาน เหมาะกับการสมัครงานหลากหลายสาขา">
+          <div class="preview-stage"><div class="mini-paper mini-professional"><div class="professional-head"><b>YOUR NAME</b><small>PROFESSIONAL TITLE</small><i></i></div><div class="professional-content"><div class="classic-heading">SUMMARY</div><i class="mini-rule"></i><i class="mini-rule"></i><div class="classic-heading">WORK EXPERIENCE</div><div class="mini-timeline"><b></b><span><i class="mini-rule"></i><i class="mini-rule short"></i></span></div><div class="mini-timeline"><b></b><span><i class="mini-rule"></i><i class="mini-rule short"></i></span></div><div class="classic-heading">EDUCATION</div><i class="mini-rule short"></i></div></div><span class="preview-zoom">ดูตัวอย่าง <b>↗</b></span></div>
+          <div class="template-info"><div><span class="template-kind">RESUME · 01</span><h3>Professional</h3><p>ครบถ้วน เหมาะกับทุกสายงาน</p></div><button class="create-button" type="button">สร้าง <span>→</span></button></div>
+        </article>
+        <article class="template-card" data-template="resume-minimal" data-kind="Resume" data-title="Minimal" data-description="พื้นที่โปร่ง อ่านเร็ว โฟกัสเฉพาะข้อมูลสำคัญ เหมาะกับเรซูเม่หน้าเดียว">
+          <div class="preview-stage"><div class="mini-paper mini-minimal"><div class="minimal-name">YOUR NAME</div><small>PROFESSIONAL TITLE</small><div class="minimal-contact"></div><div class="minimal-layout"><div><div class="classic-heading">SKILLS</div><i class="mini-tag"></i><i class="mini-tag"></i><i class="mini-tag"></i><div class="classic-heading">EDUCATION</div><i class="mini-rule short"></i></div><div><div class="classic-heading">PROFILE</div><i class="mini-rule"></i><i class="mini-rule"></i><i class="mini-rule short"></i><div class="classic-heading">EXPERIENCE</div><i class="mini-rule"></i><i class="mini-rule"></i><i class="mini-rule short"></i></div></div></div><span class="preview-zoom">ดูตัวอย่าง <b>↗</b></span></div>
+          <div class="template-info"><div><span class="template-kind">RESUME · 02</span><h3>Minimal</h3><p>กระชับ สะอาด ทันสมัย</p></div><button class="create-button" type="button">สร้าง <span>→</span></button></div>
+        </article>
+        <article class="template-card" data-template="resume-sidebar" data-kind="Resume" data-title="Sidebar" data-description="แถบด้านข้างช่วยจัดหมวดหมู่ทักษะและข้อมูลติดต่อให้ค้นหาได้ง่าย">
+          <div class="preview-stage"><div class="mini-paper mini-sidebar"><div class="sidebar-strip"><span class="mini-avatar"></span><i></i><i></i><i></i><div class="mini-label"></div><i></i><i></i></div><div class="sidebar-main"><b>YOUR NAME</b><small>PROFESSIONAL TITLE</small><div class="classic-heading">EXPERIENCE</div><i class="mini-rule"></i><i class="mini-rule short"></i><div class="classic-heading">EDUCATION</div><i class="mini-rule"></i><div class="classic-heading">PROJECTS</div><i class="mini-rule short"></i></div></div><span class="preview-zoom">ดูตัวอย่าง <b>↗</b></span></div>
+          <div class="template-info"><div><span class="template-kind">RESUME · 03</span><h3>Sidebar</h3><p>แบ่งสัดส่วนชัด สแกนข้อมูลง่าย</p></div><button class="create-button" type="button">สร้าง <span>→</span></button></div>
+        </article>
+      </div>
+    </section>
 
-                <div class="section-title"><i data-lucide="code"></i> ทักษะทางเทคนิค</div>
-                <ul class="skill-list" id="skills-render">
-                    <!-- JS rendering -->
-                </ul>
+    <section class="steps"><p class="eyebrow">SIMPLE BY DESIGN</p><h2>เริ่มต้นง่าย ๆ ใน <span>3 ขั้นตอน</span></h2><div class="step-grid"><div><b>01</b><h3>เลือกดีไซน์</h3><p>ดูตัวอย่างและเลือกแบบที่เหมาะกับคุณ</p></div><div><b>02</b><h3>ใส่ข้อมูล</h3><p>กรอกประวัติ ทักษะ และประสบการณ์</p></div><div><b>03</b><h3>ดาวน์โหลด</h3><p>ตรวจดูเอกสารและบันทึกเป็น PDF</p></div></div></section>
+  </main>
 
-                <div class="section-title"><i data-lucide="settings"></i> เครื่องมือที่ใช้</div>
-                <ul class="skill-list" id="tools-render">
-                    <!-- JS rendering -->
-                </ul>
+  <footer><a class="brand" href="index.html"><span class="brand-mark">F</span><span>forma<span class="brand-dot">.</span></span></a><p>ทำเอกสารสมัครงานที่สะท้อนความเป็นคุณ</p><small>© 2026 Forma · Resume builder</small></footer>
 
-                <div class="section-title"><i data-lucide="users"></i> ทักษะส่วนตัว</div>
-                <ul class="skill-list" id="soft-skills-render">
-                    <!-- JS rendering -->
-                </ul>
-            </div>
-
-            <div class="profile-card" style="text-align: left; padding: 24px;">
-                <div class="section-title" style="margin-top:0"><i data-lucide="graduation-cap"></i> การศึกษา</div>
-                <div id="education-render"></div>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <section class="content">
-
-            <div id="res-summary" class="summary-box">
-                <!-- JS rendering -->
-            </div>
-
-            <h2><i data-lucide="briefcase"></i> ประสบการณ์ทำงาน</h2>
-            <div id="experience-render">
-                <!-- JS rendering -->
-            </div>
-
-            <h2 style="margin-top:50px"><i data-lucide="layout"></i> ผลงานโปรเจกต์</h2>
-            <div class="project-grid" id="projects-render">
-                <!-- JS rendering -->
-            </div>
-        </section>
-    </main>
-
-    <footer class="container"
-        style="padding: 40px 0; text-align: center; color: var(--muted); font-size: 12px; border-top: 1px solid rgba(255,255,255,0.05)">
-        <p>© 2025 Yodchan Suphaphan — Built with Love & Code</p>
-    </footer>
-
-    <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
-    <script src="scripts.js"></script>
+  <dialog class="preview-dialog" id="preview-dialog" aria-labelledby="preview-title">
+    <button class="dialog-close" type="button" aria-label="ปิดตัวอย่าง">×</button>
+    <div class="dialog-preview-stage"><div class="dialog-paper" id="dialog-paper"></div></div>
+    <div class="dialog-info"><p class="eyebrow" id="dialog-kind"></p><h2 id="preview-title"></h2><p id="preview-description"></p><button class="primary-button" id="dialog-create" type="button">สร้างด้วยดีไซน์นี้ <span>→</span></button></div>
+  </dialog>
+  <script src="templates.js"></script>
 </body>
-
-</html> 
+</html>

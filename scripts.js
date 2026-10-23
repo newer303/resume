@@ -1,88 +1,33 @@
 const defaultData = {
-  name: 'Yodchan Suphaphan',
-  title: 'Full-Stack Developer',
-  location: 'กรุงเทพมหานคร, ประเทศไทย',
-  avatar: 'YS',
-  avatarImage: null, // data URL (base64) for profile image
-  contact: {
-    email: 'nkegamer1@gmail.com',
-    phone: '+66 96-730-1189',
-    github: 'https://github.com/newer303',
-    linkedin: 'yodchan-suphaphan'
-  },
-  summary: 'ชอบการทำงานที่ได้ใช้ความคิดสร้างสรรค์และแก้ปัญหา มีประสบการณ์ในการพัฒนาเว็บไซต์และออกแบบ UI/UX ด้วยทักษะด้าน Frontend Development และความเข้าใจในกระบวนการออกแบบที่ดี มีความสามารถในการทำงานร่วมกับทีมและสื่อสารได้อย่างมีประสิทธิภาพ',
-  education: [
-    {
-      degree: 'ปริญญาตรี',
-      major: 'วิศวกรรมซอฟต์แวร์',
-      institution: 'มหาวิทยาลัยตัวอย่าง',
-      period: '2016 - 2020',
-      location: 'กรุงเทพมหานคร',
-      bullets: ['เกรดเฉลี่ย 3.50', 'กิจกรรม: ทีมซอฟต์แวร์']
-    }
-  ],
-  skills: [
-    { name: 'HTML/CSS' },
-    { name: 'PHP' },
-    { name: 'JavaScript' },
-    { name: 'React' },
-    { name: 'UI / Figma' },
-    { name: 'Node.js' },
-    { name: 'Next.js' },
-    { name: 'TypeScript' }
-  ],
-  tools: [
-    'Git / GitHub',
-    'VS Code',
-    'Figma',
-    'Roblox Studio',
-    'Unity'
-  ],
-  softSkills: [
-    'การทำงานเป็นทีม',
-    'การแก้ปัญหา',
-    'ความคิดสร้างสรรค์',
-    'การจัดการเวลา'
-  ],
-  experience: [
-    {
-      title: 'Frontend Developer',
-      company: 'บริษัทตัวอย่าง',
-      period: 'มิ.ย. 2021 - ปัจจุบัน',
-      location: 'กรุงเทพมหานคร',
-      bullets: [
-        'พัฒนา UI ด้วย React และจัดการ state ด้วย Redux / Context',
-        'ออกแบบและปรับปรุงประสิทธิภาพเว็บไซต์ให้โหลดเร็วขึ้น 30%',
-        'ร่วมออกแบบ UX และทำ prototype ด้วย Figma'
-      ]
-    },
-    {
-      title: 'Junior Web Developer',
-      company: 'บริษัทต้น',
-      period: 'ม.ค. 2020 - พ.ค. 2021',
-      location: 'กรุงเทพมหานคร',
-      bullets: [
-        'เขียน HTML/CSS ที่เข้ากับมาตรฐาน Responsive และเข้าถึงได้ (accessibility)',
-        'ร่วมพัฒนาแอปพลิเคชันเว็บบน Node.js สำหรับระบบภายใน'
-      ]
-    }
-  ],
-  projects: [
-    { title: 'ระบบจองเวลาออนไลน์', desc: 'ออกแบบ UI/UX และพัฒนา frontend ให้ลูกค้าสามารถจองบริการได้อย่างราบรื่น รองรับมือถือและเดสก์ท็อป' },
-    { title: 'แดชบอร์ดวิเคราะห์', desc: 'สร้างแดชบอร์ดด้วย React + D3 เพื่อแสดงข้อมูลเชิงลึกและชาร์ตต่าง ๆ' }
-  ]
+  name: '',
+  title: '',
+  location: '',
+  avatar: 'YN',
+  avatarImage: null,
+  contact: { email: '', phone: '', github: '', linkedin: '' },
+  summary: '',
+  education: [],
+  skills: [],
+  tools: [],
+  softSkills: [],
+  experience: [],
+  projects: []
 };
 
-// Initialize current data - load from localStorage or use default
+// Each selected design keeps its own draft in this browser.
+const resumeStorageKey = window.resumeStorageKey || 'forma_resume_data_default';
+const escapeHTML = value => String(value == null ? '' : value)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 let currentData = (() => {
-  const stored = localStorage.getItem('resume_data_v1');
+  const stored = localStorage.getItem(resumeStorageKey);
   return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(defaultData));
 })();
 
 // Storage API for data persistence across pages
 window.resumeStorage = {
   load: function () {
-    const stored = localStorage.getItem('resume_data_v1');
+    const stored = localStorage.getItem(resumeStorageKey);
     if (stored) {
       try {
         currentData = JSON.parse(stored);
@@ -106,7 +51,7 @@ window.resumeStorage = {
   },
   save: function (data) {
     currentData = data;
-    localStorage.setItem('resume_data_v1', JSON.stringify(data));
+    localStorage.setItem(resumeStorageKey, JSON.stringify(data));
     // Re-render if on the resume page
     if (document.getElementById('res-name')) {
       renderResume();
@@ -120,6 +65,11 @@ window.resumeStorage = {
 };
 
 function renderResume() {
+  const params = new URLSearchParams(window.location.search);
+  const selectedTemplate = params.get('template') || localStorage.getItem('forma_selected_template') || 'resume-professional';
+  localStorage.setItem('forma_selected_template', selectedTemplate);
+  document.documentElement.dataset.template = selectedTemplate;
+  document.body.dataset.template = selectedTemplate;
   let data = window.resumeStorage ? window.resumeStorage.load() : currentData;
   data = Object.assign({}, defaultData, data || {});
   data.contact = Object.assign({}, defaultData.contact, data.contact || {});
@@ -154,7 +104,7 @@ function renderResume() {
   const avatarEl = document.getElementById('res-avatar');
   if (avatarEl) {
     if (data.avatarImage) {
-      avatarEl.innerHTML = `<img src="${data.avatarImage}" alt="${data.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      avatarEl.innerHTML = `<img src="${escapeHTML(data.avatarImage)}" alt="${escapeHTML(data.name)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     } else {
       avatarEl.textContent = data.avatar;
     }
@@ -196,17 +146,17 @@ function renderResume() {
 
   const skillsEl = document.getElementById('skills-render');
   if (skillsEl) {
-    skillsEl.innerHTML = data.skills.map(s => `<li>${typeof s === 'string' ? s : s.name || ''}</li>`).join('');
+    skillsEl.innerHTML = data.skills.map(s => `<li>${escapeHTML(typeof s === 'string' ? s : s.name || '')}</li>`).join('');
   }
 
   const toolsEl = document.getElementById('tools-render');
   if (toolsEl) {
-    toolsEl.innerHTML = data.tools.map(tool => `<li>${typeof tool === 'string' ? tool : tool.name || ''}</li>`).join('');
+    toolsEl.innerHTML = data.tools.map(tool => `<li>${escapeHTML(typeof tool === 'string' ? tool : tool.name || '')}</li>`).join('');
   }
 
   const softSkillsEl = document.getElementById('soft-skills-render');
   if (softSkillsEl) {
-    softSkillsEl.innerHTML = data.softSkills.map(skill => `<li>${typeof skill === 'string' ? skill : skill.name || ''}</li>`).join('');
+    softSkillsEl.innerHTML = data.softSkills.map(skill => `<li>${escapeHTML(typeof skill === 'string' ? skill : skill.name || '')}</li>`).join('');
   }
 
   const educationEl = document.getElementById('education-render');
@@ -215,11 +165,11 @@ function renderResume() {
       const majorText = item.major ? ` • ${item.major}` : '';
       return `
             <div style="margin-bottom:15px">
-                <div style="font-weight:700; font-size:14px">${item.degree}${majorText}</div>
-                <div style="font-size:12px; color:var(--muted)">${item.period}</div>
-                <div style="font-size:12px; color:var(--text-muted); margin-top:8px">${item.institution} • ${item.location}</div>
+                <div style="font-weight:700; font-size:14px">${escapeHTML(item.degree)}${escapeHTML(majorText)}</div>
+                <div style="font-size:12px; color:var(--muted)">${escapeHTML(item.period)}</div>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:8px">${escapeHTML(item.institution)} • ${escapeHTML(item.location)}</div>
                 <ul style="margin:10px 0 0;padding-left:18px;color:var(--text-muted);font-size:13px;">
-                    ${item.bullets.map(b => `<li>${b}</li>`).join('')}
+                    ${item.bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}
                 </ul>
             </div>
         `;
@@ -232,13 +182,13 @@ function renderResume() {
             <div class="job-card">
                 <div class="job-header">
                     <div>
-                        <h3 class="job-title">${exp.title}</h3>
-                        <div class="job-company">${exp.company}</div>
+                        <h3 class="job-title">${escapeHTML(exp.title)}</h3>
+                        <div class="job-company">${escapeHTML(exp.company)}</div>
                     </div>
-                    <span class="job-date">${exp.period}</span>
+                    <span class="job-date">${escapeHTML(exp.period)}</span>
                 </div>
                 <ul class="job-list">
-                    ${exp.bullets.map(t => `<li>${t}</li>`).join('')}
+                    ${exp.bullets.map(t => `<li>${escapeHTML(t)}</li>`).join('')}
                 </ul>
             </div>
         `).join('');
@@ -248,11 +198,44 @@ function renderResume() {
   if (projContainer) {
     projContainer.innerHTML = data.projects.map(p => `
             <div class="project-card">
-                <h4>${p.title}</h4>
-                <p>${p.desc}</p>
+                <h4>${escapeHTML(p.title)}</h4>
+                <p>${escapeHTML(p.desc)}</p>
             </div>
         `).join('');
   }
+
+  if (summaryEl) summaryEl.hidden = !String(data.summary || '').trim();
+  [
+    [skillsEl, data.skills.length],
+    [toolsEl, data.tools.length],
+    [softSkillsEl, data.softSkills.length]
+  ].forEach(([list, count]) => {
+    if (!list) return;
+    list.hidden = count === 0;
+    if (list.previousElementSibling) list.previousElementSibling.hidden = count === 0;
+  });
+  const educationCard = educationEl && educationEl.closest('.profile-card');
+  if (educationCard) educationCard.hidden = data.education.length === 0;
+  [[expContainer, data.experience.length], [projContainer, data.projects.length]].forEach(([section, count]) => {
+    if (!section) return;
+    section.hidden = count === 0;
+    if (section.previousElementSibling) section.previousElementSibling.hidden = count === 0;
+  });
+  [['res-email', data.contact.email], ['res-phone', data.contact.phone], ['res-github', data.contact.github], ['res-linkedin', data.contact.linkedin]].forEach(([id, value]) => {
+    const item = document.getElementById(id);
+    if (item && item.closest('li')) item.closest('li').hidden = !String(value || '').trim();
+  });
+  const locationEl = document.getElementById('res-location-sidebar');
+  if (locationEl && locationEl.closest('li')) locationEl.closest('li').hidden = !String(data.location || '').trim();
+  const contactList = document.querySelector('.contact-list');
+  if (contactList) {
+    const hasContact = Array.from(contactList.children).some(item => !item.hidden);
+    contactList.hidden = !hasContact;
+    const heading = contactList.previousElementSibling;
+    if (heading) heading.hidden = !hasContact;
+  }
+  const handleEl = document.getElementById('res-profile-handle');
+  if (handleEl) handleEl.hidden = !String(data.contact.github || '').trim();
 
   if (window.lucide && typeof window.lucide.createIcons === 'function') {
     window.lucide.createIcons();
@@ -273,121 +256,23 @@ function exportPDF() {
   const element = document.body;
   const opt = {
     margin: 0,
-    filename: 'resume-yodchan.pdf',
+    filename: (localStorage.getItem('forma_selected_template') || 'resume').replace(/[^a-z0-9-]/gi, '-') + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
   // Hide button before export
-  const btn = document.querySelector('.btn-print');
-  if (btn) btn.style.display = 'none';
+  const buttons = [...document.querySelectorAll('.btn-print')];
+  buttons.forEach(btn => { btn.style.display = 'none'; });
 
   html2pdf().set(opt).from(element).save().then(() => {
-    if (btn) btn.style.display = '';
+    buttons.forEach(btn => { btn.style.display = ''; });
   });
 }
 
 function editProfile() {
-  showPasswordModal();
+  const template = localStorage.getItem('forma_selected_template') || 'resume-professional';
+  window.location.href = 'edit_resume.html?template=' + encodeURIComponent(template);
 }
 
-function showPasswordModal() {
-  let overlay = document.getElementById('password-modal-overlay');
-  
-  if (!overlay) {
-    // Create modal HTML if it doesn't exist
-    const modalHTML = `
-      <div id="password-modal-overlay" class="password-modal-overlay">
-        <div class="password-modal">
-          <div class="password-modal-header">
-            <i data-lucide="lock"></i>
-            <div>
-              <h2 class="password-modal-title">กรุณาป้อนรหัสผ่าน</h2>
-              <p class="password-modal-subtitle">เข้าถึงการแก้ไขข้อมูลโปรไฟล์</p>
-            </div>
-          </div>
-          <div class="password-modal-content">
-            <div class="password-error" id="password-error"></div>
-            <div class="password-input-group">
-              <label for="password-input">รหัสผ่าน</label>
-              <input type="password" id="password-input" placeholder="กรุณาป้อนรหัสผ่าน" onkeypress="if(event.key==='Enter') verifyPassword()">
-            </div>
-          </div>
-          <div class="password-modal-buttons">
-            <button class="btn-modal btn-modal-cancel" onclick="closePasswordModal()">ยกเลิก</button>
-            <button class="btn-modal btn-modal-submit" onclick="verifyPassword()">ยืนยัน</button>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    overlay = document.getElementById('password-modal-overlay');
-    
-    // Update lucide icons
-    if (window.lucide && typeof window.lucide.createIcons === 'function') {
-      window.lucide.createIcons();
-    }
-  }
-  
-  // Clear previous input and error
-  const passwordInput = document.getElementById('password-input');
-  const errorDiv = document.getElementById('password-error');
-  
-  passwordInput.value = '';
-  errorDiv.classList.remove('show');
-  errorDiv.textContent = '';
-  
-  // Show modal
-  overlay.classList.add('active');
-  setTimeout(() => {
-    const modal = document.querySelector('.password-modal');
-    if (modal) modal.classList.add('active');
-  }, 10);
-  
-  // Focus input
-  setTimeout(() => passwordInput.focus(), 300);
-  
-  // Allow closing with Escape key
-  document.addEventListener('keydown', handleEscapeKey);
-}
-
-function closePasswordModal() {
-  const overlay = document.getElementById('password-modal-overlay');
-  const modal = document.querySelector('.password-modal');
-  
-  if (modal) modal.classList.remove('active');
-  
-  setTimeout(() => {
-    if (overlay) overlay.classList.remove('active');
-  }, 200);
-  
-  document.removeEventListener('keydown', handleEscapeKey);
-}
-
-function handleEscapeKey(e) {
-  if (e.key === 'Escape') {
-    closePasswordModal();
-  }
-}
-
-function verifyPassword() {
-  const correctPassword = '13465';
-  const passwordInput = document.getElementById('password-input');
-  const errorDiv = document.getElementById('password-error');
-  const enteredPassword = passwordInput.value;
-  
-  if (enteredPassword === correctPassword) {
-    // Password correct - transition to new page
-    closePasswordModal();
-    setTimeout(() => {
-      window.location.href = 'edit_resume.html';
-    }, 300);
-  } else {
-    // Password incorrect
-    errorDiv.textContent = '❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง';
-    errorDiv.classList.add('show');
-    passwordInput.value = '';
-    passwordInput.focus();
-  }
-}

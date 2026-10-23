@@ -723,3 +723,62 @@ h2 i {
         font-size: 20px;
     }
 }
+
+/* Paper-like, print-ready styles for the six selectable designs */
+html[data-template] body{--bg:#f2f4f8;--bg-secondary:#fff;--card:#fff;--card-light:#fff;--muted:#677386;--text:#202a3b;--text-muted:#526074;--shadow-sm:0 2px 8px rgba(25,36,58,.06);--shadow-md:0 8px 24px rgba(25,36,58,.05);--shadow-lg:0 16px 48px rgba(25,36,58,.08);background:var(--bg);color:var(--text)}
+html[data-template] .site-header{position:relative;background:#fff;border:0;border-bottom:3px solid var(--accent);box-shadow:none;backdrop-filter:none}
+html[data-template] .name{-webkit-text-fill-color:initial;background:none;color:var(--text);animation:none;text-shadow:none}
+html[data-template] .header-title{color:var(--accent);letter-spacing:1.2px}
+html[data-template] .btn-print{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
+html[data-template] .profile-card,html[data-template] .job-card,html[data-template] .project-card{background:#fff;border:1px solid #e2e7ef;box-shadow:none}
+html[data-template] .profile-card:hover,html[data-template] .job-card:hover,html[data-template] .project-card:hover{transform:none;box-shadow:0 5px 16px rgba(25,36,58,.06)}
+html[data-template] .section-title,html[data-template] h2 i,html[data-template] .contact-list i{color:var(--accent)}
+html[data-template] .section-title::after{background:color-mix(in srgb,var(--accent) 20%,transparent)}
+html[data-template] .skill-list li{background:color-mix(in srgb,var(--accent) 7%,white);border-color:color-mix(in srgb,var(--accent) 20%,white);color:var(--text)}
+html[data-template] .job-card::before{background:var(--accent)}
+html[data-template] .job-company{color:var(--accent)}
+html[data-template] .summary-box{background:color-mix(in srgb,var(--accent) 5%,white);border-left-color:var(--accent)}
+html[data-template="cv-modern"]{--accent:#435bd5;--accent-secondary:#3387dc;--primary-gradient:linear-gradient(135deg,#435bd5,#3387dc)}
+html[data-template="cv-classic"]{--accent:#805b40;--accent-secondary:#a78362;--primary-gradient:linear-gradient(135deg,#805b40,#a78362)}
+html[data-template="cv-classic"] .site-header{text-align:center;border-bottom:1px solid #d8cabb}
+html[data-template="cv-classic"] .header-grid{display:block;position:relative}
+html[data-template="cv-classic"] .header-grid>div:last-child{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+html[data-template="cv-classic"] .name,html[data-template="cv-classic"] h2,html[data-template="cv-classic"] .job-title{font-family:Georgia,'Sarabun',serif}
+html[data-template="cv-classic"] .profile-card,html[data-template="cv-classic"] .job-card,html[data-template="cv-classic"] .project-card{border-radius:3px}
+html[data-template="cv-creative"]{--accent:#8b48b8;--accent-secondary:#e06f93;--primary-gradient:linear-gradient(135deg,#8b48b8,#e06f93);--bg:#f8f3fa}
+html[data-template="cv-creative"] .site-header{background:linear-gradient(115deg,#653a90,#9251b0);border:0;color:#fff}
+html[data-template="cv-creative"] .name{color:#fff}
+html[data-template="cv-creative"] .header-title{color:#f8ddff}
+html[data-template="cv-creative"] .btn-print{background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.35)}
+html[data-template="cv-creative"] .profile-card{border-radius:22px 5px 22px 5px}
+html[data-template="resume-professional"]{--accent:#187b68;--accent-secondary:#279c85;--primary-gradient:linear-gradient(135deg,#187b68,#279c85)}
+html[data-template="resume-professional"] .site-header{border-bottom-width:4px}
+html[data-template="resume-minimal"]{--accent:#3b4654;--accent-secondary:#707b8a;--primary-gradient:linear-gradient(135deg,#3b4654,#707b8a);--bg:#fff}
+html[data-template="resume-minimal"] .site-header{border-bottom:1px solid #d6dbe2}
+html[data-template="resume-minimal"] .main-grid{display:block}
+html[data-template="resume-minimal"] .sidebar{position:static;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+html[data-template="resume-minimal"] .profile-card{margin:0 0 18px;border:0;border-radius:0;padding:20px 0;border-bottom:1px solid #dfe3e8}
+html[data-template="resume-minimal"] .profile-card:hover{transform:none}
+html[data-template="resume-minimal"] .summary-box{background:#fff;border:0;border-top:2px solid #323b49;border-bottom:1px solid #dfe3e8;border-radius:0;padding:20px 0}
+html[data-template="resume-minimal"] .job-card,html[data-template="resume-minimal"] .project-card{border:0;border-bottom:1px solid #dfe3e8;border-radius:0;padding:18px 0;margin:0}
+html[data-template="resume-minimal"] .job-card::before{display:none}
+html[data-template="resume-sidebar"]{--accent:#f1c56b;--accent-secondary:#f1c56b;--primary-gradient:linear-gradient(135deg,#182a45,#244b67);--bg:#f2f4f7}
+html[data-template="resume-sidebar"] .site-header{background:#182a45;border:0}
+html[data-template="resume-sidebar"] .name{color:#fff}
+html[data-template="resume-sidebar"] .header-title{color:#f1c56b}
+html[data-template="resume-sidebar"] .btn-print{background:#f1c56b;color:#182a45}
+html[data-template="resume-sidebar"] .main-grid{grid-template-columns:300px 1fr;gap:28px}
+html[data-template="resume-sidebar"] .sidebar .profile-card:first-child{background:#182a45;border-color:#182a45;color:#fff}
+html[data-template="resume-sidebar"] .sidebar .profile-card:first-child h3,html[data-template="resume-sidebar"] .sidebar .profile-card:first-child .contact-list li,html[data-template="resume-sidebar"] .sidebar .profile-card:first-child .contact-list a{color:#e8eef5}
+html[data-template="resume-sidebar"] .sidebar .profile-card:first-child .skill-list li{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff}
+html[data-template="resume-sidebar"] .sidebar .profile-card:first-child .section-title{color:#f1c56b}
+@media print{
+  html[data-template] body{background:#fff!important;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html[data-template] .site-header{position:static;box-shadow:none}
+  html[data-template] .btn-print,html[data-template] footer{display:none!important}
+  html[data-template] .container{max-width:none;padding-left:0;padding-right:0}
+  html[data-template] .main-grid{padding-top:18px}
+  html[data-template] .profile-card,html[data-template] .job-card,html[data-template] .project-card{break-inside:avoid}
+}
+@media(max-width:900px){html[data-template="resume-sidebar"] .main-grid{grid-template-columns:1fr}html[data-template="resume-sidebar"] .sidebar{position:static}}
+@media(max-width:600px){html[data-template="cv-classic"] .header-grid>div:last-child{position:static;transform:none;justify-content:center;margin-top:14px}html[data-template="resume-minimal"] .sidebar{grid-template-columns:1fr}}
