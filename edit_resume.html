@@ -217,7 +217,7 @@
                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">ที่อยู่ปัจจุบัน</label>
                     <input type="text" id="location" name="location" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น กรุงเทพฯ, ประเทศไทย">
                   </div>
-                  <div class="w-32">
+                  <div id="avatar-initials-group" class="w-32">
                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Avatar ตัวย่อ</label>
                     <input type="text" id="avatar" name="avatar" class="w-full px-4 py-2 rounded-lg bg-slate-50" placeholder="เช่น YS">
                   </div>
@@ -360,6 +360,7 @@
   </script>
   <style>
     html[data-template$="-no-photo"] #avatar-upload-group,
+    html[data-template$="-no-photo"] #avatar-initials-group,
     html[data-template$="-no-photo"] #avatar-preview,
     html[data-template$="-no-photo"] #avatar-file,
     html[data-template$="-no-photo"] #clear-avatar { display: none !important; }
