@@ -796,3 +796,12 @@ html[data-template="resume-sidebar"] .sidebar .profile-card:first-child .section
   .btn-primary, .btn-add, .btn-remove { min-height: 42px; }
   input, textarea, select { font: inherit; line-height: 1.5; }
 }
+
+/* CV templates omit profile photos; Resume templates retain the optional photo slot. */
+html[data-template^="cv-"] #res-avatar { display: none !important; }
+html[data-template^="cv-"] .avatar-container { display: none !important; }
+html[data-template^="cv-"] #avatar-upload-group,
+html[data-template^="cv-"] #avatar-preview,
+html[data-template^="cv-"] #avatar-file,
+html[data-template^="cv-"] #clear-avatar,
+html[data-template^="cv-"] label[for="avatar"] { display: none !important; }

@@ -102,7 +102,10 @@ function renderResume() {
   setText('res-location-sidebar', data.location);
 
   const avatarEl = document.getElementById('res-avatar');
+  const selectedTemplateId = document.documentElement.dataset.template || '';
+  const showAvatar = selectedTemplateId.startsWith('resume-');
   if (avatarEl) {
+    avatarEl.hidden = !showAvatar;
     if (data.avatarImage) {
       avatarEl.innerHTML = `<img src="${escapeHTML(data.avatarImage)}" alt="${escapeHTML(data.name)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     } else {
